@@ -1,2 +1,5 @@
-issuer,faceValue,couponRate,couponFrequency,yearsToMaturity,marketPrice
-US1234567890, Sample Issuer, 12/31/2045, 0.05, 2, 950.0, 1000, 21
+# isin, issuer, maturityDate,couponRate,paymentFrequency,marketPrice, faceValue
+US1234567890, Sample Issuer, 12/31/2045, 0.05, 2, 950.0, 1000.0
+US0987654321, Another Issuer, 06/30/2030, 0.04, 1, 980.0, 1000.0
+US1122334455, Third Issuer, 03/15/2026, 0.06, 2, 1020.0, 1000.0
+US5566778899, Fourth Issuer, 11/20/2035, 0.045, 1, 970.0, 1000.0

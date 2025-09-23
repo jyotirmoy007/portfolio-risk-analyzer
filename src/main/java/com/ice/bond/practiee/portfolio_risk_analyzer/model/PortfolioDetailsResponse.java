@@ -5,7 +5,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.List;
-import java.util.Map;
 
 @Builder
 @Getter
@@ -16,8 +15,6 @@ public class PortfolioDetailsResponse {
     //private List<Bond> bonds;
     List<BondDTO> bonds; // ISIN to quantity mapping
     private double totalMarketValue;
-    private double totalFaceValue;
-    private double averageCouponRate;
-    private double duration;
-    private double convexity;
+    private double weightedAvgDuration;
+
 }

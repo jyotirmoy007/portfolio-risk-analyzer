@@ -1,6 +1,5 @@
 package com.ice.bond.practiee.portfolio_risk_analyzer.model;
 
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -15,7 +14,7 @@ public class Bond {
     private String issuer;
     private LocalDate maturityDate;
     private double couponRate; // as a decimal (e.g., 0.05 for 5%)
-    private int couponFrequency;
+    private int paymentFrequency;
     private double marketPrice;
     private double faceValue;
     private int yearsToMaturity;

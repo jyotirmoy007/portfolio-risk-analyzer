@@ -14,8 +14,12 @@ public class BondDTO {
     private String issuer;
     private LocalDate maturityDate;
     private double couponRate; // as a decimal (e.g., 0.05 for 5%)
-    private int couponFrequency;
+    private int paymentFrequency;
     private double marketPrice;
     private double faceValue;
     private int quantity;
+    private double yieldToMaturity;
+    private int yearsToMaturity;
+    private double duration;
+    private double modifiedDuration;
 }
