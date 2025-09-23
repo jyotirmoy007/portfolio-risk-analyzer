@@ -16,19 +16,7 @@ import java.util.concurrent.TimeUnit;
 @EnableCaching
 public class CacheConfig {
 
-    @Bean
-    public Caffeine<Object, Object> caffeineConfig() {
-        return Caffeine.newBuilder()
-                .expireAfterWrite(10, TimeUnit.MINUTES) // cache expiry
-                .maximumSize(1000); // max entries
-    }
 
-    @Bean
-    public CacheManager cacheManager(Caffeine<Object, Object> caffeine) {
-        CaffeineCacheManager cacheManager = new CaffeineCacheManager("bondDurations");
-        cacheManager.setCaffeine(caffeine);
-        return cacheManager;
-    }
 
     @Bean
     public Cache<String, Double> durationCache() {
