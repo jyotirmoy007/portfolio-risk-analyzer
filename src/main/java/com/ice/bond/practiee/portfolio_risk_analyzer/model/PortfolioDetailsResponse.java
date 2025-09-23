@@ -19,5 +19,4 @@ public class PortfolioDetailsResponse {
     private Double totalMarketValue;
     private Double weightedAvgDuration;
     private String errorMessage;
-
 }

@@ -114,10 +114,10 @@ class PortfolioServiceTest {
 
         portfolioService.addBondToPortfolio(portfolioId, "BAD_ISIN", 5);
 
-        when(bondService.looupBondByIsin("BAD_ISIN")).thenReturn(null);
+        when(bondService.looupBondByIsin("BAD_ISIN")).thenThrow(IllegalArgumentException.class);
 
         assertThatThrownBy(() ->
                 portfolioService.getPortfolioDetails(portfolioId)
-        ).isInstanceOf(NullPointerException.class);
+        ).isInstanceOf(IllegalArgumentException.class);
     }
 }

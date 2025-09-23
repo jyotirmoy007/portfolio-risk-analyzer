@@ -1,5 +1,6 @@
 package com.ice.bond.practiee.portfolio_risk_analyzer.service;
 
+import com.ice.bond.practiee.portfolio_risk_analyzer.exception.PortfolioNotFoundException;
 import com.ice.bond.practiee.portfolio_risk_analyzer.model.AvailableBonds;
 import com.ice.bond.practiee.portfolio_risk_analyzer.model.Bond;
 import com.ice.bond.practiee.portfolio_risk_analyzer.utils.BondUtils;
@@ -57,6 +58,6 @@ public class BondService {
         return availableBonds.getAvailableBonds().stream()
                 .filter(bond -> bond.getIsin().equals(isin))
                 .findFirst()
-                .orElse(null);
+                .orElseThrow(() -> new IllegalArgumentException("Invalid ISIN: " + isin));
     }
 }

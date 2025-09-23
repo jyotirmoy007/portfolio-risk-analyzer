@@ -23,6 +23,13 @@ public class PortfolioService {
     private Cache<String, Double> durationCache;
 
 
+    /**
+     * Constructs a PortfolioService with required dependencies.
+     *
+     * @param bondService the bond service for bond lookup
+     * @param yieldToMaturityCalculator calculator for yield to maturity
+     * @param durationCache cache for storing bond duration calculations
+     */
     @Autowired
     public PortfolioService(BondService bondService, YieldToMaturityCalculator yieldToMaturityCalculator,
                             Cache<String, Double> durationCache) {
@@ -32,15 +39,31 @@ public class PortfolioService {
         this.durationCache = durationCache;
     }
 
+    /**
+     * Adds a bond to a portfolio by portfolio ID and bond ISIN.
+     *
+     * @param portfolioId the portfolio identifier
+     * @param isin the bond ISIN
+     * @param quantity the quantity of the bond to add
+     * @return true if the bond was added successfully
+     * @throws PortfolioNotFoundException if the portfolio does not exist
+     */
     public boolean addBondToPortfolio(String portfolioId, String isin, int quantity)
             throws PortfolioNotFoundException {
         // Logic to add bond to portfolio
         Portfolio portfolio = lookupPortfolioById(portfolioId);
+        bondService.looupBondByIsin(isin);
         portfolio.addBond(isin, quantity);
         System.out.println("### Adding bond " + isin + " with quantity " + quantity + " to portfolio");
         return true; // Assume success for this example
     }
 
+    /**
+     * Creates a new portfolio for a customer.
+     *
+     * @param request the portfolio creation request
+     * @return the ID of the newly created portfolio
+     */
     public String createPortfolio(CreatePortfolioRequest request) {
         Portfolio newPortfolio = new Portfolio();
         newPortfolio.setCustomerName(request.getCustomerName());
@@ -51,7 +74,13 @@ public class PortfolioService {
     }
 
 
-
+    /**
+     * Retrieves detailed information about a portfolio.
+     *
+     * @param portfolioId the portfolio identifier
+     * @return the portfolio details response
+     * @throws PortfolioNotFoundException if the portfolio does not exist
+     */
     public PortfolioDetailsResponse getPortfolioDetails(String portfolioId) throws PortfolioNotFoundException {
         Portfolio portfolio = lookupPortfolioById(portfolioId);
         List<BondDTO> bondDTOs = transformToBondDTO(portfolio.getBondQuantities(), portfolioId);
@@ -65,6 +94,12 @@ public class PortfolioService {
                 .build();
     }
 
+    /**
+     * Calculates the weighted average duration of bonds in a portfolio.
+     *
+     * @param bonds the list of bond DTOs
+     * @return the weighted average duration, rounded to 2 decimal places
+     */
     private double calculateWeightedAvgDuration(List<BondDTO> bonds) {
         if (bonds == null || bonds.isEmpty()) {
             return 0.0;
@@ -85,6 +120,12 @@ public class PortfolioService {
                 .doubleValue();
     }
 
+    /**
+     * Calculates the total market value of a list of bonds.
+     *
+     * @param bondDTOs the list of bond DTOs
+     * @return the total market value
+     */
     private double calculateTotalMarketValue(List<BondDTO> bondDTOs) {
         if (bondDTOs == null || bondDTOs.isEmpty()) {
             return 0.0;
@@ -97,6 +138,13 @@ public class PortfolioService {
         return totalValue;
     }
 
+    /**
+     * Looks up a portfolio by its ID.
+     *
+     * @param portfolioId the portfolio identifier
+     * @return the portfolio object
+     * @throws PortfolioNotFoundException if the portfolio does not exist
+     */
     private Portfolio lookupPortfolioById(String portfolioId) throws PortfolioNotFoundException {
         return    portfolios.stream()
                 .filter(p -> p.getId().equals(portfolioId))
@@ -104,6 +152,14 @@ public class PortfolioService {
                 .orElseThrow(() -> new PortfolioNotFoundException("Portfolio not found"));
     }
 
+    /**
+     * Transforms a map of bond ISINs and quantities into a list of BondDTOs,
+     * calculating yield, duration, and other metrics for each bond.
+     *
+     * @param bondQuantities map of bond ISINs to quantities
+     * @param portfolioId the portfolio identifier
+     * @return list of BondDTOs
+     */
     private List<BondDTO> transformToBondDTO(Map<String, Integer> bondQuantities, String portfolioId) {
         List<BondDTO> bondDtos = new ArrayList<>();
         for (Map.Entry<String, Integer> entry : bondQuantities.entrySet()) {
@@ -122,8 +178,6 @@ public class PortfolioService {
                 System.out.println("### Caching duration for key: " + cacheKey + " Duration: " + dur);
                 return dur;
             });
-//             BondDurationCalculator.calculateMacaulayDuration(bond.getFaceValue(),
-//                    bond.getCouponRate(), yearsToMaturity, yieldToMaturity);
             double modifiedDuration = BondDurationCalculator.calculateModifiedDuration(duration, yieldToMaturity);
 
             BondDTO bondDto = BondDTO.builder()
