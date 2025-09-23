@@ -7,6 +7,8 @@ import com.ice.bond.practiee.portfolio_risk_analyzer.utils.BondUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -75,7 +77,10 @@ public class PortfolioService {
             totalMarketValue += marketValue;
         }
 
-        return totalMarketValue == 0.0 ? 0.0 : weightedSum / totalMarketValue;
+        return totalMarketValue == 0.0 ? 0.0 :
+                BigDecimal.valueOf(weightedSum / totalMarketValue)
+                .setScale(2, RoundingMode.HALF_UP)
+                .doubleValue();
     }
 
     private double calculateTotalMarketValue(List<BondDTO> bondDTOs) {
