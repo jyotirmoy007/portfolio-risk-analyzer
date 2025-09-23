@@ -1,6 +1,7 @@
 package com.ice.bond.practiee.portfolio_risk_analyzer.service;
 
 import com.github.benmanes.caffeine.cache.Cache;
+import com.ice.bond.practiee.portfolio_risk_analyzer.exception.PortfolioNotFoundException;
 import com.ice.bond.practiee.portfolio_risk_analyzer.model.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -92,7 +93,7 @@ class PortfolioServiceTest {
     void testAddBondToPortfolio_portfolioNotFound_throwsException() {
         assertThatThrownBy(() ->
                 portfolioService.addBondToPortfolio("INVALID", "US1234567890", 10)
-        ).isInstanceOf(IllegalArgumentException.class)
+        ).isInstanceOf(PortfolioNotFoundException.class)
                 .hasMessageContaining("Portfolio not found");
     }
 
@@ -101,7 +102,7 @@ class PortfolioServiceTest {
     void testGetPortfolioDetails_portfolioNotFound_throwsException() {
         assertThatThrownBy(() ->
                 portfolioService.getPortfolioDetails("MISSING")
-        ).isInstanceOf(IllegalArgumentException.class)
+        ).isInstanceOf(PortfolioNotFoundException.class)
                 .hasMessageContaining("Portfolio not found");
     }
 

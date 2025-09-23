@@ -1,6 +1,7 @@
 package com.ice.bond.practiee.portfolio_risk_analyzer.service;
 
 import com.github.benmanes.caffeine.cache.Cache;
+import com.ice.bond.practiee.portfolio_risk_analyzer.exception.PortfolioNotFoundException;
 import com.ice.bond.practiee.portfolio_risk_analyzer.model.*;
 import com.ice.bond.practiee.portfolio_risk_analyzer.utils.BondDurationCalculator;
 import com.ice.bond.practiee.portfolio_risk_analyzer.utils.BondUtils;
@@ -31,7 +32,8 @@ public class PortfolioService {
         this.durationCache = durationCache;
     }
 
-    public boolean addBondToPortfolio(String portfolioId, String isin, int quantity) {
+    public boolean addBondToPortfolio(String portfolioId, String isin, int quantity)
+            throws PortfolioNotFoundException {
         // Logic to add bond to portfolio
         Portfolio portfolio = lookupPortfolioById(portfolioId);
         portfolio.addBond(isin, quantity);
@@ -50,7 +52,7 @@ public class PortfolioService {
 
 
 
-    public PortfolioDetailsResponse getPortfolioDetails(String portfolioId) {
+    public PortfolioDetailsResponse getPortfolioDetails(String portfolioId) throws PortfolioNotFoundException {
         Portfolio portfolio = lookupPortfolioById(portfolioId);
         List<BondDTO> bondDTOs = transformToBondDTO(portfolio.getBondQuantities(), portfolioId);
 
@@ -95,11 +97,11 @@ public class PortfolioService {
         return totalValue;
     }
 
-    private Portfolio lookupPortfolioById(String portfolioId) {
+    private Portfolio lookupPortfolioById(String portfolioId) throws PortfolioNotFoundException {
         return    portfolios.stream()
                 .filter(p -> p.getId().equals(portfolioId))
                 .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException("Portfolio not found"));
+                .orElseThrow(() -> new PortfolioNotFoundException("Portfolio not found"));
     }
 
     private List<BondDTO> transformToBondDTO(Map<String, Integer> bondQuantities, String portfolioId) {
