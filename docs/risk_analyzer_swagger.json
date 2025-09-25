@@ -1,0 +1,381 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "OpenAPI definition",
+    "version": "v0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8080",
+      "description": "Generated server url"
+    }
+  ],
+  "paths": {
+    "/api/portfolio": {
+      "post": {
+        "tags": [
+          "portfolio-controller"
+        ],
+        "operationId": "createPortfolio",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreatePortfolioRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/hal+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/hal+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/hal+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreatePortfolioResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/portfolio/bond": {
+      "post": {
+        "tags": [
+          "portfolio-controller"
+        ],
+        "operationId": "addBondToPortfolio",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BondAddRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/hal+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/hal+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/hal+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BondAddResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/portfolio/{portfolioId}": {
+      "get": {
+        "tags": [
+          "portfolio-controller"
+        ],
+        "operationId": "retrievePortfolio",
+        "parameters": [
+          {
+            "name": "portfolioId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/hal+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/hal+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/hal+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PortfolioDetailsResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/bonds": {
+      "get": {
+        "tags": [
+          "bond-controller"
+        ],
+        "operationId": "getAllBonds",
+        "responses": {
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/hal+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/hal+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/hal+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AvailableBonds"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ErrorResponse": {
+        "type": "object",
+        "properties": {
+          "errorMessage": {
+            "type": "string"
+          }
+        }
+      },
+      "CreatePortfolioRequest": {
+        "type": "object",
+        "properties": {
+          "customerName": {
+            "type": "string"
+          }
+        }
+      },
+      "CreatePortfolioResponse": {
+        "type": "object",
+        "properties": {
+          "portfolioId": {
+            "type": "string"
+          }
+        }
+      },
+      "BondAddRequest": {
+        "type": "object",
+        "properties": {
+          "portfolioId": {
+            "type": "string"
+          },
+          "isin": {
+            "type": "string"
+          },
+          "quantity": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "BondAddResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string"
+          }
+        }
+      },
+      "BondDTO": {
+        "type": "object",
+        "properties": {
+          "isin": {
+            "type": "string"
+          },
+          "issuer": {
+            "type": "string"
+          },
+          "maturityDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "couponRate": {
+            "type": "number",
+            "format": "double"
+          },
+          "paymentFrequency": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "marketPrice": {
+            "type": "number",
+            "format": "double"
+          },
+          "faceValue": {
+            "type": "number",
+            "format": "double"
+          },
+          "quantity": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "yieldToMaturity": {
+            "type": "number",
+            "format": "double"
+          },
+          "yearsToMaturity": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "duration": {
+            "type": "number",
+            "format": "double"
+          },
+          "modifiedDuration": {
+            "type": "number",
+            "format": "double"
+          }
+        }
+      },
+      "PortfolioDetailsResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "customerName": {
+            "type": "string"
+          },
+          "bonds": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/BondDTO"
+            }
+          },
+          "totalMarketValue": {
+            "type": "number",
+            "format": "double"
+          },
+          "weightedAvgDuration": {
+            "type": "number",
+            "format": "double"
+          },
+          "errorMessage": {
+            "type": "string"
+          }
+        }
+      },
+      "AvailableBonds": {
+        "type": "object",
+        "properties": {
+          "availableBonds": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Bond"
+            }
+          }
+        }
+      },
+      "Bond": {
+        "type": "object",
+        "properties": {
+          "isin": {
+            "type": "string"
+          },
+          "issuer": {
+            "type": "string"
+          },
+          "maturityDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "couponRate": {
+            "type": "number",
+            "format": "double"
+          },
+          "paymentFrequency": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "marketPrice": {
+            "type": "number",
+            "format": "double"
+          },
+          "faceValue": {
+            "type": "number",
+            "format": "double"
+          },
+          "yearsToMaturity": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,106 @@
+{
+	"info": {
+		"_postman_id": "f28b73fe-9a07-4af7-8849-e0b1be1d5dae",
+		"name": "RiskAnalyzer",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "2046170"
+	},
+	"item": [
+		{
+			"name": "GET bonds",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/api/bonds",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"bonds"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create portfolio",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"customerName\" : \"Jyotirmoy Chakrbaorty\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/api/portfolio",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"portfolio"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "AddBondToPortfolio",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"portfolioId\": \"7e947ca1-67bc-457c-8df5-4cb981e13101\",\r\n  \"isin\": \"US098765432\",\r\n  \"quantity\": 3\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/api/portfolio/bond",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"portfolio",
+						"bond"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET Portfolio",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/api/portfolio/f8997457-6d20-4627-9b33-4a2ca68eb598",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"portfolio",
+						"f8997457-6d20-4627-9b33-4a2ca68eb598"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
